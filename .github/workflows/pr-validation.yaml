@@ -1,0 +1,31 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install htmlhint stylelint stylelint-config-standard --save-dev
+
+      - name: Lint HTML
+        run: npx htmlhint "src/**/*.html"
+
+      - name: Lint CSS
+        run: npx stylelint "styles/**/*.css"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build project
+        run: npm install && npx parcel build src/index.html
